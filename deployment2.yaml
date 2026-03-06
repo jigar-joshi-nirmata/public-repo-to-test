@@ -19,6 +19,14 @@ spec:
       containers:
         - name: http-server
           image: hashicorp/http-echo:0.2.3
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
           args:
             - "-text=hello from kubernetes"
           ports:
@@ -47,3 +55,8 @@ spec:
               port: 5678
             initialDelaySeconds: 10
             periodSeconds: 20
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
+      automountServiceAccountToken: false
